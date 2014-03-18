@@ -30,7 +30,7 @@ bool HelloWorld::init()
     CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
-	CCSprite *bg1 = CCSprite::create("scene/scene_1.png");
+	bg1 = CCSprite::create("scene/scene_1.png");
 	//bg1->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	bg1->setAnchorPoint(ccp(0,0));
 	bg1->setPosition(ccp(0,0));
@@ -121,23 +121,19 @@ void HelloWorld::setState(short var)
 	case 0://Εά
 		this->stopAllActions();
 		mainSprite->stopAllActions();
-		CCAnimation *animation = CCAnimation::create();
-		animation->addSpriteFrameWithFileName("role/run/role3_run_1.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_2.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_3.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_4.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_5.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_6.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_7.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_8.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_9.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_10.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_11.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_12.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_13.png");
-		animation->addSpriteFrameWithFileName("role/run/role3_run_14.png");
-		animation->setDelayPerUnit(0.06f);
-		animation->setRestoreOriginalFrame(true);
+		CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+		cache->addSpriteFramesWithFile("role/Role3_Auto_Run.plist", "role/Role3_Auto_Run.png");
+
+		CCArray* animFrames = CCArray::createWithCapacity(14);
+		char str[100] = {0};
+		for(int i = 0; i < 14; i++)
+		{
+			sprintf(str, "Role3_Auto_Run%04d", i);
+			CCSpriteFrame *frame = cache->spriteFrameByName(str);
+			animFrames->addObject(frame);
+		}
+
+		CCAnimation *animation = CCAnimation::createWithSpriteFrames(animFrames, 0.05f);
 		mainSprite->runAction(CCRepeatForever::create(CCAnimate::create(animation)));
 		break;
 	}

@@ -10,6 +10,7 @@ public:
 	short state;//0正常；1跳跃；2受伤
 	short direction;//0右；1左
 	cocos2d::CCSprite *mainSprite;
+	cocos2d::CCSprite *bg1;//场景地图容器
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
