@@ -30,7 +30,7 @@ bool HelloWorld::init()
     CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
-	bg1 = CCSprite::create("scene/scene_1.png");
+	bg1 = CCSprite::create("scene/scene_4.png");
 	//bg1->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	bg1->setAnchorPoint(ccp(0,0));
 	bg1->setPosition(ccp(0,0));
@@ -82,13 +82,15 @@ bool HelloWorld::init()
 
     // add "HelloWorld" splash screen"
     mainSprite = CCSprite::create("role/role3.png");
+	direction = 2;
 
     // position the sprite on the center of the screen
     mainSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y-110));
 
 	// add the sprite as a child to this layer
     this->addChild(mainSprite, 1);
-
+	
+	//this->scheduleUpdate();
     return true;
 }
 
@@ -122,19 +124,24 @@ void HelloWorld::setState(short var)
 		this->stopAllActions();
 		mainSprite->stopAllActions();
 		CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+		CCLOG ("%s \n", "1 start addSpriteFramesWithFile");
 		cache->addSpriteFramesWithFile("role/Role3_Auto_Run.plist", "role/Role3_Auto_Run.png");
-
+		
+		CCLOG ("%s \n", "2 addSpriteFramesWithFile");
 		CCArray* animFrames = CCArray::createWithCapacity(14);
 		char str[100] = {0};
 		for(int i = 0; i < 14; i++)
 		{
 			sprintf(str, "Role3_Auto_Run%04d", i);
 			CCSpriteFrame *frame = cache->spriteFrameByName(str);
+			
+			CCLOG ("%s \n", str);
 			animFrames->addObject(frame);
 		}
 
 		CCAnimation *animation = CCAnimation::createWithSpriteFrames(animFrames, 0.05f);
 		mainSprite->runAction(CCRepeatForever::create(CCAnimate::create(animation)));
+		CCLOG ("%s \n", "runaction");
 		break;
 	}
 }
@@ -151,4 +158,19 @@ void HelloWorld::menuCallbackHandle2(CCObject *pSender)
 	mainSprite->setFlipX(false);
 	direction = 0;
 	setState(0);
+}
+
+
+void HelloWorld::update(float dt)
+{
+	if(direction == 0)
+	{
+		mainSprite->setPosition(ccp(mainSprite->getPositionX()+2, mainSprite->getPositionY()));
+	}
+	else if(direction == 1)
+	{
+		mainSprite->setPosition(ccp(mainSprite->getPositionX()-2, mainSprite->getPositionY()));
+	}
+
+
 }

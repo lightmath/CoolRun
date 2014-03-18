@@ -27,6 +27,8 @@ public:
 	
 	void menuCallbackHandle2(CCObject *pSender);
 
+	void update(float dt);
+
     // implement the "static node()" method manually
     CREATE_FUNC(HelloWorld);
 };
