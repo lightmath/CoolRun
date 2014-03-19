@@ -92,7 +92,7 @@ bool HelloWorld::init()
 	CCLOG ("%s \n", "come in action");
 	setRoleState(0);
 	CCLOG ("%s \n", "come out action");
-//	this->scheduleUpdate();
+	this->scheduleUpdate();
     return true;
 }
 
@@ -108,13 +108,14 @@ void HelloWorld::menuCloseCallback(CCObject* pSender)
 #endif
 }
 
-void HelloWorld::setRoleState(short var)
+void HelloWorld::setRoleState(short dir)
 {
-	if(state==var)
+	if(direction == dir)
+	{
 		return;
-	state = var;
+	}
+	direction = dir;
 
-	//mainSprite->stopAllActions();
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	CCLOG ("%s \n", "1 start addSpriteFramesWithFile");
 	cache->addSpriteFramesWithFile("role/Role3_Auto_Run.plist", "role/Role3_Auto_Run.png");
@@ -140,19 +141,31 @@ void HelloWorld::menuCallbackHandle1(CCObject *pSender)
 {
 	mainSprite->setFlipX(true);
 	direction = 1;
-	setRoleState(0);
 }
 
 void HelloWorld::menuCallbackHandle2(CCObject *pSender)
 {
 	mainSprite->setFlipX(false);
 	direction = 0;
-	setRoleState(0);
 }
 
 
 void HelloWorld::update(float dt)
 {
+	//ÅÐ¶ÏÊÇ·ñÔ½½ç
+	CCLOG ("VisibleOrigin: %f \n", (CCDirector::sharedDirector()->getVisibleSize()).width);
+	CCPoint point1 = mainSprite->convertToWorldSpace(mainSprite->getPosition());
+	if(point1.x<0)
+	{
+		mainSprite->setFlipX(false);
+		direction = 0;
+	}
+	else if(point1.x>2*(CCDirector::sharedDirector()->getVisibleSize()).width)
+	{
+		mainSprite->setFlipX(true);
+		direction = 1;
+	}
+
 	if(direction == 0)
 	{
 		mainSprite->setPosition(ccp(mainSprite->getPositionX()+2, mainSprite->getPositionY()));
