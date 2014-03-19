@@ -21,7 +21,7 @@ public:
     // a selector callback
     void menuCloseCallback(CCObject* pSender);
 
-	void setState(short var);
+	void setRoleState(short var);
     
 	void menuCallbackHandle1(CCObject *pSender);
 	
